@@ -1,6 +1,7 @@
 .streamlit/secrets.toml
 .streamlit/
 secrets.toml
+testando.ipynb/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
