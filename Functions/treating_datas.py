@@ -1,9 +1,10 @@
 import pandas as pd
 import requests
 import streamlit as st
+import numpy as np
 
 
-def treating_data(df):
+def treating_data_from_pipe(df):
 
     meses = {
     1: "Janeiro",
@@ -22,7 +23,7 @@ def treating_data(df):
 
     unidad_df = df.copy()
 
-    unidad_df_columns = ['Title','Cliente (Restored)','Current phase',
+    unidad_df_columns = ['Title','Cliente','Current phase',
                         'Data de Faturamento','Representante','Representante Secundário',
                         'Etiquetas','Itens do Pedido','CNPJ emissor de NF ','Prazo de Pagamento',
                         'Tipo de NF ','Número da NF ','Valor Faturado']
@@ -32,7 +33,7 @@ def treating_data(df):
     unidad_df = unidad_df.rename(columns={'Title':'Cliente',
                                         'Current phase':'Fase_do_pedido',
                                         'Data de Faturamento':'Data_do_pedido',
-                                        'Cliente (Restored)':'CNPJ_cliente',
+                                        'Cliente':'CNPJ_cliente',
                                         'Etiquetas':'Empresa',
                                         'Itens do Pedido':'Produtos',
                                         'CNPJ emissor de NF ':'CNPJ_empresa',
@@ -49,3 +50,18 @@ def treating_data(df):
 
 
     return unidad_df
+
+def encontrar_empresa(texto):
+
+
+    if pd.isna(texto):
+        return np.nan
+    
+    texto = str(texto)
+
+    lista_de_empresas = ["Brasil Med","Unidas BH","Unidas SP"]
+    
+    for empresa in lista_de_empresas:
+        if empresa in texto:
+            return empresa
+    return np.nan 
