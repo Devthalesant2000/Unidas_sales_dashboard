@@ -4,6 +4,20 @@ import streamlit as st
 import numpy as np
 
 
+def encontrar_empresa(texto):
+
+    if pd.isna(texto):
+        return np.nan
+    
+    texto = str(texto)
+
+    lista_de_empresas = ["Brasil Med","Unidas BH","Unidas SP"]
+    
+    for empresa in lista_de_empresas:
+        if empresa in texto:
+            return empresa
+    return np.nan 
+
 def treating_data_from_pipe(df):
 
     meses = {
@@ -43,6 +57,7 @@ def treating_data_from_pipe(df):
     unidad_df['Mès_num'] = unidad_df['Data_do_pedido'].dt.month
     unidad_df['Mês_do_pedido'] = unidad_df['Mès_num'].map(meses)
     unidad_df['Data_do_pedido'] = unidad_df['Data_do_pedido'].dt.strftime("%d/%m/%y")
+    unidad_df['Empresa_tratada'] = unidad_df['CNPJ_empresa'].apply(encontrar_empresa)
 
     unidad_df = unidad_df.sort_values(by='Mès_num')
 
@@ -50,18 +65,3 @@ def treating_data_from_pipe(df):
 
 
     return unidad_df
-
-def encontrar_empresa(texto):
-
-
-    if pd.isna(texto):
-        return np.nan
-    
-    texto = str(texto)
-
-    lista_de_empresas = ["Brasil Med","Unidas BH","Unidas SP"]
-    
-    for empresa in lista_de_empresas:
-        if empresa in texto:
-            return empresa
-    return np.nan 

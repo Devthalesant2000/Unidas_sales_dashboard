@@ -176,7 +176,6 @@ with col3:
 
 # Carrega os dados com cache
 df, dados_brutos = dados()
-df['Empresa_tratada'] = df['CNPJ_empresa'].apply(encontrar_empresa)
 
 df_mes = df.loc[df['Mês_do_pedido'] == nome_mes]
 df_dia = df.loc[df['Data_do_pedido'] == data_formatada]
