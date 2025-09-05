@@ -1,8 +1,6 @@
 .streamlit/secrets.toml
-.streamlit/
 secrets.toml
-testando.ipynb/
-
+*.secrets
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
