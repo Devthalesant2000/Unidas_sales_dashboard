@@ -5,7 +5,7 @@ st.set_page_config(layout="wide")
 
 # --- PAGE SETUP ---
 dash_page = st.Page(
-    "Modules/Unidas_dashboard.py",
+    "Modules/Unidas_dashboard_month.py",
     title="Dashboard Unidas Vendas",
     icon=":material/thumb_up:",
 )
@@ -15,7 +15,7 @@ dash_page = st.Page(
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "Dashboard Unidas": [dash_page],
+        "Dashboard Unidas - Mês Atual": [dash_page],
     }
 )
 

@@ -150,7 +150,7 @@ meses_pt = [
     "Julio", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
 mes_atual = datetime.now().month
-data_formatada = datetime.now().strftime("%d/%m/%y")
+data_formatada = (datetime.now() - timedelta(hours=3)).strftime("%d/%m/%y")
 nome_mes = meses_pt[mes_atual - 1]
 
 @st.cache_data(ttl=3600)
@@ -511,4 +511,4 @@ st.info("""
 
 # FOOTER
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: #7f8c8d;'>Dashboard desenvolvido para UNIDAS MEDICAL | Atualizado em {}</p>".format(datetime.now().strftime("%d/%m/%Y %H:%M")), unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #7f8c8d;'>Dashboard desenvolvido para UNIDAS MEDICAL | Atualizado em {}</p>".format((datetime.now() - timedelta(hours=3)).strftime("%d/%m/%Y %H:%M")), unsafe_allow_html=True)
