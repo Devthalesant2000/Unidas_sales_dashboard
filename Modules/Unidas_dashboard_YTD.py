@@ -232,7 +232,7 @@ vendas_mes_a_mes['Media_Movel'] = vendas_mes_a_mes['Valor Faturado'].rolling(win
 
 # HEADER PRINCIPAL
 st.markdown('<p class="main-header">Dashboard de Vendas - UNIDAS MEDICAL YTD</p>', unsafe_allow_html=True)
-st.markdown(f'<h3 style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">Análise de Performance Ano a Ano - {datetime.now().year}</h3>', unsafe_allow_html=True)
+st.markdown(f'<h3 style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">Análise de Performance Anual - {datetime.now().year}</h3>', unsafe_allow_html=True)
 
 # KPIs PRINCIPAIS - DESIGN PREMIUM
 st.markdown('<p class="main-sub-header">📈 VISÃO GERAL DO ANO</p>', unsafe_allow_html=True)
