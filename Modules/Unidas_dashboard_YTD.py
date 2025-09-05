@@ -567,6 +567,15 @@ with col4:
         <p style="font-size: 1.5rem; color: #9b59b6; margin: 0;"><strong>{coeficiente_variacao:.1f}%</strong></p>
     </div>
     """, unsafe_allow_html=True)
+    # Adicionar insights automáticos
+    if coeficiente_variacao > 30:
+        insight = "📉 Alta volatilidade"
+    elif coeficiente_variacao > 15:
+        insight = "📊 Variabilidade moderada"
+    else:
+        insight = "📈 Estabilidade excelente"
+
+    st.info(f"**Insight:** {insight}")
 
 # Tabela detalhada
 st.subheader("📋 Detalhamento Mensal")
