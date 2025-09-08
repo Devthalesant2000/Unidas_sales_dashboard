@@ -142,7 +142,7 @@ def check_password():
                 ❌ Senha incorreta. Por favor, verifique e tente novamente.
             </div>
             """, unsafe_allow_html=True)
-            st.image("C:/Users/novo1/OneDrive/Desktop/Pessoal/Freelas/Unidas_sales_dashboard/image_pa.jpg",caption="Pa,Acesso negado")
+            st.image("https://www.google.com/url?sa=i&url=https%3A%2F%2Fx.com%2Fparetoluizz%2Fstatus%2F1907762754305536154&psig=AOvVaw2asj7ElPQBisrZiD6bRqi8&ust=1757429076024000&source=images&cd=vfe&opi=89978449&ved=2ahUKEwix9c_Ps8mPAxWeNrkGHVFcOqwQjRx6BAgAEBo",caption="Pa,Acesso negado")
             
             st.markdown('</div>', unsafe_allow_html=True)
             return False
