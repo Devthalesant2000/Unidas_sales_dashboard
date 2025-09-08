@@ -162,13 +162,13 @@ if not check_password():
 dash_page = st.Page(
     "Modules/Unidas_dashboard_month.py",
     title="Mês Atual",
-    icon="📊",
+    icon="📊"
 )
 
 dash_YTD_page = st.Page(
     "Modules/Unidas_dashboard_YTD.py",
     title="YTD",
-    icon="📈",
+    icon="📈"
 )
 
 # --- NAVIGATION SETUP [WITH SECTIONS]---

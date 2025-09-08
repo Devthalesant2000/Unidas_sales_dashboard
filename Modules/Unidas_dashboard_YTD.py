@@ -9,14 +9,6 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 
-# Configuração da página
-st.set_page_config(
-    page_title="Dashboard UNIDAS MEDICAL - YTD",
-    page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 # CSS personalizado premium (o mesmo do dashboard anterior)
 st.markdown("""
 <style>
@@ -162,7 +154,7 @@ st.markdown("""
 
 # Dados e configurações
 lista_de_empresas = ["Brasil Med","Unidas BH","Unidas SP"]
-meta_mensal = 2000000
+meta_mensal = st.secrets['authentication']['meta_mes']
 
 meses_pt = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -187,6 +179,17 @@ def dados():
     dados_brutos = cached_main()
     df = cached_treating_data(dados_brutos)
     return df, dados_brutos
+
+# Adicione estas funções de formatação após as importações
+def format_currency(value):
+    """Formata valores inteiros com separador de milhar por ponto"""
+    return f"{value:,.0f}".replace(",", ".")
+
+def format_currency_float(value):
+    """Formata valores float com 2 casas decimais e separador de milhar por ponto"""
+    if pd.isna(value):
+        return value
+    return f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 # Botão para atualizar dados (limpar cache)
 col1, col2, col3 = st.columns([3, 2, 1])
@@ -240,19 +243,19 @@ st.markdown('<p class="main-sub-header">📈 VISÃO GERAL DO ANO</p>', unsafe_al
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">🎯</div>
-        <div class="kpi-value">R$ {meta_ano:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(meta_ano)}</div>
         <div class="kpi-label">Meta Anual</div>
     </div>
     """.format(meta_ano=meta_ano), unsafe_allow_html=True)
 
 with col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">💰</div>
-        <div class="kpi-value">R$ {faturamento_do_ano:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(faturamento_do_ano)}</div>
         <div class="kpi-label">Faturamento YTD</div>
     </div>
     """.format(faturamento_do_ano=faturamento_do_ano), unsafe_allow_html=True)
@@ -270,10 +273,10 @@ with col3:
     """.format(atingimento_meta_proporcional=atingimento_meta_proporcional, progresso_value=min(atingimento_meta_proporcional, 100)), unsafe_allow_html=True)
 
 with col4:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">🎫</div>
-        <div class="kpi-value">R$ {ticket_medio_anual:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(ticket_medio_anual)}</div>
         <div class="kpi-label">Ticket Médio Anual</div>
     </div>
     """.format(ticket_medio_anual=ticket_medio_anual), unsafe_allow_html=True)
@@ -413,7 +416,7 @@ with col1:
 with col2:
     # Comparação com o melhor mês
     st.markdown("##### 🏆 Comparação com o Melhor Mês")
-    st.markdown(f"**Melhor mês:** {melhor_mes_nome} - R$ {melhor_mes_valor:,.0f}")
+    st.markdown(f"**Melhor mês:** {melhor_mes_nome}  - R$ {format_currency(melhor_mes_valor)}")
     
     # Calcular diferença percentual em relação ao melhor mês
     vendas_mes_a_mes['Vs_Melhor_Mes'] = (vendas_mes_a_mes['Valor Faturado'] / melhor_mes_valor) * 100
@@ -530,7 +533,7 @@ with col1:
     <div class="comparison-card">
         <h4 style="margin-top: 0; color: #2c3e50;">📅 Melhor Mês</h4>
         <p style="font-size: 1.2rem; margin-bottom: 0;"><strong>{melhor_mes_nome}</strong></p>
-        <p style="font-size: 1.5rem; color: #27ae60; margin: 0;"><strong>R$ {melhor_mes_valor:,.0f}</strong></p>
+        <p style="font-size: 1.5rem; color: #27ae60; margin: 0;"><strong>R$ {format_currency(melhor_mes_valor)}</strong></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -543,7 +546,7 @@ with col2:
     <div class="comparison-card">
         <h4 style="margin-top: 0; color: #2c3e50;">📅 Pior Mês</h4>
         <p style="font-size: 1.2rem; margin-bottom: 0;"><strong>{pior_mes_nome}</strong></p>
-        <p style="font-size: 1.5rem; color: #e74c3c; margin: 0;"><strong>R$ {pior_mes_valor:,.0f}</strong></p>
+        <p style="font-size: 1.5rem; color: #e74c3c; margin: 0;"><strong>R$ {format_currency(pior_mes_valor)}</strong></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -552,7 +555,7 @@ with col3:
     st.markdown(f"""
     <div class="comparison-card">
         <h4 style="margin-top: 0; color: #2c3e50;">📊 Média Mensal</h4>
-        <p style="font-size: 1.5rem; color: #3498db; margin: 0;"><strong>R$ {media_mensal:,.0f}</strong></p>
+        <p style="font-size: 1.5rem; color: #3498db; margin: 0;"><strong>R$ {format_currency(media_mensal)}</strong></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -580,8 +583,9 @@ with col4:
 # Tabela detalhada
 st.subheader("📋 Detalhamento Mensal")
 vendas_mes_a_mes_display = vendas_mes_a_mes.copy()
-vendas_mes_a_mes_display['Valor Faturado'] = vendas_mes_a_mes_display['Valor Faturado'].apply(lambda x: f'R$ {x:,.2f}')
-vendas_mes_a_mes_display['Ticket_médio'] = vendas_mes_a_mes_display['Ticket_médio'].apply(lambda x: f'R$ {x:,.2f}')
+vendas_mes_a_mes_display['Media_Movel'] = vendas_mes_a_mes_display['Valor Faturado'].apply(format_currency_float)
+vendas_mes_a_mes_display['Valor Faturado'] = vendas_mes_a_mes_display['Valor Faturado'].apply(format_currency_float)
+vendas_mes_a_mes_display['Ticket_médio'] = vendas_mes_a_mes_display['Ticket_médio'].apply(format_currency_float)
 vendas_mes_a_mes_display['Crescimento'] = vendas_mes_a_mes_display['Crescimento'].apply(lambda x: f'{x:.1f}%')
 vendas_mes_a_mes_display['Vs_Melhor_Mes'] = vendas_mes_a_mes_display['Vs_Melhor_Mes'].apply(lambda x: f'{x:.1f}%')
 

@@ -1,18 +1,15 @@
 Próximos Passos: 
+- c
+- Metas vendedores puxando do google sheets para ficar dinâmico o preenchimento 
+- opção de fechamento de ano 
+- colocar loc para pegar somente ano atual (escalável para ano que vem) 
+- página com filtros mais afunilados
 
-- Tratar a base novamente
-
-- fazer o dash baseado na nova base de dados
-
-- consultar limites de requisições e plano pago pelo cliente
-
-- Fazer a nova página de dashboard focada em loja a loja, itens vendidos e tipo de cliente
-
-- Alinhar uma data para reunião
 
 feito :
 - Colocar o get token automático e (preciso de uma função que faça isso, encaixar essa função no código
-    credentials to get the token is in the secrets.toml)
-
-    
+    credentials to get the token is in the secrets.toml)    
 - Bater com os clientes qual será o report que será utilizado como base de dados
+- Tratar a base novamente
+- fazer o dash baseado na nova base de dados
+- Fazer a nova página de dashboard focada em loja a loja, itens vendidos e tipo de cliente

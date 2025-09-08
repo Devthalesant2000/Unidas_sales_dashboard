@@ -7,14 +7,6 @@ from datetime import timedelta, datetime
 import numpy as np
 import plotly.graph_objects as go
 
-# Configuração da página
-st.set_page_config(
-    page_title="Dashboard UNIDAS MEDICAL",
-    page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 # CSS personalizado premium
 st.markdown("""
 <style>
@@ -143,7 +135,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 # Dados e configurações
 lista_de_empresas = ["Brasil Med","Unidas BH","Unidas SP"]
-meta_mes = 2000000
+meta_mes = st.secrets['authentication']['meta_mes']
 
 meses_pt = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -198,6 +190,16 @@ ticket_medio_mes = Faturamento_mes/quantidade_vendida
 # Calcular o valor do progresso (não pode ultrapassar 100%)
 progresso_value = min(atingimento_meta_mes, 100)
 
+# Função para formatar valores monetários com separador de milhar por ponto
+def format_currency(value):
+    return f"{value:,.0f}".replace(",", ".")
+# Função para formatar valores com ponto como separador de milhar (para floats)
+def format_currency_float(value):
+    if pd.isna(value):
+        return value
+    return f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
 # HEADER PRINCIPAL
 st.markdown('<p class="main-header">Dashboard de Vendas - UNIDAS MEDICAL</p>', unsafe_allow_html=True)
 st.markdown(f'<h3 style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">Análise das Vendas da Rede - {nome_mes}</h3>', unsafe_allow_html=True)
@@ -208,25 +210,25 @@ st.markdown('<p class="main-sub-header">📈 VISÃO GERAL DO MÊS</p>', unsafe_a
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">🎯</div>
-        <div class="kpi-value">R$ {meta_mes:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(meta_mes)}</div>
         <div class="kpi-label">Meta do Mês</div>
     </div>
-    """.format(meta_mes=meta_mes), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">💰</div>
-        <div class="kpi-value">R$ {Faturamento_mes:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(Faturamento_mes)}</div>
         <div class="kpi-label">Faturamento Realizado</div>
     </div>
-    """.format(Faturamento_mes=Faturamento_mes), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">📊</div>
         <div class="kpi-value">{atingimento_meta_mes:,.1f}%</div>
@@ -235,16 +237,16 @@ with col3:
             <div class="progress-bar" style="width: {progresso_value}%;"></div>
         </div>
     </div>
-    """.format(atingimento_meta_mes=atingimento_meta_mes, progresso_value=progresso_value), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col4:
-    st.markdown("""
+    st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-icon">🎫</div>
-        <div class="kpi-value">R$ {ticket_medio_mes:,.0f}</div>
+        <div class="kpi-value">R$ {format_currency(ticket_medio_mes)}</div>
         <div class="kpi-label">Ticket Médio</div>
     </div>
-    """.format(ticket_medio_mes=ticket_medio_mes), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # DIVISÃO VISUAL
 st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
@@ -255,31 +257,31 @@ st.markdown('<p class="sub-header">📅 Vendas Diárias Detalhadas</p>', unsafe_
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="secondary-kpi">
         <div style="font-size: 1.8rem;">📅</div>
         <div class="secondary-kpi-value">{data_formatada}</div>
         <div class="secondary-kpi-label">Data de Hoje</div>
     </div>
-    """.format(data_formatada=data_formatada), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="secondary-kpi">
         <div style="font-size: 1.8rem;">💸</div>
-        <div class="secondary-kpi-value">R$ {Faturamento_dia:,.0f}</div>
+        <div class="secondary-kpi-value">R$ {format_currency(Faturamento_dia)}</div>
         <div class="secondary-kpi-label">Faturamento Hoje</div>
     </div>
-    """.format(Faturamento_dia=Faturamento_dia), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="secondary-kpi">
         <div style="font-size: 1.8rem;">🚀</div>
-        <div class="secondary-kpi-value">R$ {faturamento_melhor_dia:,.0f}</div>
+        <div class="secondary-kpi-value">R$ {format_currency(faturamento_melhor_dia)}</div>
         <div class="secondary-kpi-label">Melhor Dia do Mês</div>
     </div>
-    """.format(faturamento_melhor_dia=faturamento_melhor_dia), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # Gráfico de vendas diárias
 fig_vendas = go.Figure()
@@ -306,7 +308,7 @@ st.plotly_chart(fig_vendas, use_container_width=True)
 st.subheader("Detalhamento por Data")
 st.dataframe(
     vendas_diarias.style.format({
-        'Valor Faturado': 'R$ {:.2f}'
+        'Valor Faturado': format_currency_float
     }).background_gradient(subset=['Valor Faturado'], cmap='Blues'),
     use_container_width=True
 )
@@ -347,13 +349,12 @@ st.plotly_chart(fig_produtos, use_container_width=True)
 st.subheader("**Detalhamento dos Top 5:**")
 st.dataframe(
     produtos_groupby.style.format({
-        'Valor Faturado': 'R$ {:.2f}'
+        'Valor Faturado': format_currency_float
     }).highlight_max(subset=['Valor Faturado'], color='#d1ecff')
     .background_gradient(subset=['Valor Faturado'], cmap='Blues'),
     use_container_width=True,
     hide_index=True
 )
-
 # DIVISÃO VISUAL
 st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
@@ -420,12 +421,12 @@ for i in range(0, len(representantes_gp), 3):
                 st.markdown(f"""
                 <div class="rep-card" style="border-left-color: {border_color}">
                     <h4 style="margin:0; color: #2c3e50;">{rep['Representante']}</h4>
-                    <p style="margin:5px 0;"><strong>Faturamento:</strong> R$ {rep['Valor Faturado']:,.0f}</p>
-                    <p style="margin:5px 0;"><strong>Meta:</strong> R$ {rep['Meta']:,.0f}</p>
+                    <p style="margin:5px 0;"><strong>Faturamento:</strong> R$ {format_currency(rep['Valor Faturado'])}</p>
+                    <p style="margin:5px 0;"><strong>Meta:</strong> R$ {format_currency(rep['Meta'])}</p>
                     <p style="margin:5px 0;"><strong>Atingimento:</strong> <span style="color: {border_color}; font-weight: bold;">{rep['Atingimento']}%</span></p>
                     <p style="margin:5px 0; color: {border_color}; font-size: 12px;">{status_text}</p>
                     <p style="margin:5px 0;"><strong>Pedidos:</strong> {rep['Pedidos']}</p>
-                    <p style="margin:5px 0;"><strong>Ticket Médio:</strong> R$ {rep['Valor Faturado']/rep['Pedidos']:,.0f}</p>
+                    <p style="margin:5px 0;"><strong>Ticket Médio:</strong> R$ {format_currency(rep['Valor Faturado']/rep['Pedidos'])}</p>
                     <p style="margin:5px 0; font-size: 12px; color: #7f8c8d;">{desempenho_text}</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -480,7 +481,7 @@ fig_perf['layout']['annotations'] = [
     dict(
         x=1, y=faturamento_medio,
         xref='paper', yref='y',
-        text=f"Faturamento Médio: R$ {faturamento_medio:,.0f}",
+        text=f"Faturamento Médio: R$ {format_currency(faturamento_medio)}",
         showarrow=False,
         xanchor='right',
         yanchor='bottom',
@@ -489,7 +490,7 @@ fig_perf['layout']['annotations'] = [
     dict(
         x=1, y=meta_media,
         xref='paper', yref='y',
-        text=f"Meta Média: R$ {meta_media:,.0f}",
+        text=f"Meta Média: R$ {format_currency(meta_media)}",
         showarrow=False,
         xanchor='right',
         yanchor='top',
