@@ -142,6 +142,7 @@ def check_password():
                 ❌ Senha incorreta. Por favor, verifique e tente novamente.
             </div>
             """, unsafe_allow_html=True)
+            st.image("C:/Users/novo1/OneDrive/Desktop/Pessoal/Freelas/Unidas_sales_dashboard/image_pa.jpg",caption="Pa,Acesso negado")
             
             st.markdown('</div>', unsafe_allow_html=True)
             return False
