@@ -595,7 +595,7 @@ def color_crescimento(val):
         return 'color: black;'
 
 st.dataframe(
-    vendas_mes_a_mes_display.style.applymap(color_crescimento, subset=['Crescimento']),
+    vendas_mes_a_mes_display.style.map(color_crescimento, subset=['Crescimento']),
     use_container_width=True,
     hide_index=True
 )
