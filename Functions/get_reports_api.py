@@ -117,8 +117,8 @@ def main():
         arquivo = verificar_status(auth, export_id)
         if arquivo:
             break
-        print("Aguardando 5s...")
-        time.sleep(5)
+        print("Aguardando 10s...")
+        time.sleep(10)
 
     # Carregar no pandas
     if arquivo.endswith('.csv'):
